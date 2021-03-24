@@ -4,7 +4,7 @@ language: java
 script: mvn org.codehaus.mojo:license-maven-plugin:download-licenses
 
 after_success:  
-- BEARER=$("curl -X POST --url https://app.leanix.net/services/mtm/v1/oauth2/token -u apitoken:w88vxVddOKs8TfWg2VyGwmx4DpadFKzyxb7adVSk --data grant_type=client_credentials | jq -r '.access_token'")
+- "BEARER=$(curl -X POST --url https://app.leanix.net/services/mtm/v1/oauth2/token -u apitoken:w88vxVddOKs8TfWg2VyGwmx4DpadFKzyxb7adVSk --data grant_type=client_credentials | jq -r '.access_token')"
 
 - "SYNC_RUN=$(curl -X POST --header 'Content-type:application/json' --header "'Authorization: Bearer $BEARER -d'"`cat pivio.yaml`" https://app.leanix.net/services/integration-api/v1/synchronizationRuns | jq -r '.id'")
 
