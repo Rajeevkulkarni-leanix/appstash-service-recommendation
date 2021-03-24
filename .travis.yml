@@ -1,13 +1,13 @@
 sudo: required
 language: java
-
 script: mvn org.codehaus.mojo:license-maven-plugin:download-licenses
 
 after_success:  
-- "BEARER=$(curl -X POST --url https://app.leanix.net/services/mtm/v1/oauth2/token -u apitoken:w88vxVddOKs8TfWg2VyGwmx4DpadFKzyxb7adVSk --data grant_type=client_credentials | jq -r '.access_token')"
-
-- "SYNC_RUN=$(curl -X POST --header 'Content-type:application/json' --header "'Authorization: Bearer $BEARER -d'"`cat pivio.yaml`" https://app.leanix.net/services/integration-api/v1/synchronizationRuns | jq -r '.id'")
-
-- "RES=$(curl --write-out '%{http_code}' -X POST --header 'Content-Type: application/json' --header "'Authorization: Bearer $BEARER'" https://app.leanix.net/services/integration-api/v1/synchronizationRuns/$SYNC_RUN/start)
+- curl -X POST \
+    "https://app.leanix.net/services/cicd-connector/v1/dependencies?source=mvn&externalId=123"\
+    -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
+    -F 'api_token='w88vxVddOKs8TfWg2VyGwmx4DpadFKzyxb7adVSk\
+    -F 'host=app.leanix.net' \
+    -F 'file=@maven-dependencies.xml'
 services:
   - docker
